@@ -1,6 +1,6 @@
 const encoder = new TextEncoder();
 const sessionCookieName = "portfolio_editor_session";
-const sessionLifetimeSeconds = 8 * 60 * 60;
+const sessionLifetimeSeconds = 365 * 24 * 60 * 60;
 
 function toHex(buffer) {
   return [...new Uint8Array(buffer)].map((byte) => byte.toString(16).padStart(2, "0")).join("");

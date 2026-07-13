@@ -87,7 +87,7 @@ const labels = content.locale === "vi"
             <a href={content.contact.github} target="_blank" rel="noreferrer" data-content-href="contact.github" data-editor-link>
               <span>{labels.github}</span><strong data-content-key="contact.github" data-content-format="display-url" data-editable>{content.contact.github.replace(/^https?:\/\//, "")}</strong><i aria-hidden="true">↗</i>
             </a>
-            <a href="/cv-trinh-tran-duc-anh.pdf" target="_blank" rel="noreferrer">
+            <a href={`/api/cv?locale=${content.locale}`} target="_blank" rel="noreferrer" data-cv-link>
               <span>{labels.cv}</span><strong>{content.contact.cvLabel}</strong><i aria-hidden="true">↗</i>
             </a>
           </div>

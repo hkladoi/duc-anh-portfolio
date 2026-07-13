@@ -8,12 +8,25 @@ const { createSessionCookie, isEditorAuthorized, verifyEditorKey } = await impor
 const { validateContent } = await import("../functions/_lib/schema.js");
 const { onRequestGet: getPublicContent } = await import("../functions/api/content.js");
 const { onRequestPut: putEditorContent } = await import("../functions/api/editor/content.js");
+const { onRequestGet: getEditorStatus } = await import("../functions/api/editor/status.js");
 
 const encoder = new TextEncoder();
 
 async function sha256(value) {
   const digest = await crypto.subtle.digest("SHA-256", encoder.encode(value));
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function hmac(value, secret) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
+  return [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 function createKv() {
@@ -40,10 +53,22 @@ test("editor key creates a valid, signed session", async () => {
   assert.equal(await verifyEditorKey(`${key}-wrong`, env), false);
 
   const setCookie = await createSessionCookie(env);
-  assert.match(setCookie, /HttpOnly; Secure; SameSite=Strict; Max-Age=28800$/);
+  assert.match(setCookie, /HttpOnly; Secure; SameSite=Strict; Max-Age=31536000$/);
   const cookie = setCookie.split(";")[0];
   const request = new Request("https://portfolio.example/api/editor/status", { headers: { Cookie: cookie } });
   assert.equal(await isEditorAuthorized(request, env), true);
+});
+
+test("valid legacy session is upgraded to a rolling one-year session", async () => {
+  const env = { EDITOR_SESSION_SECRET: "rolling-session-secret" };
+  const expires = String(Math.floor(Date.now() / 1000) + 8 * 60 * 60);
+  const signature = await hmac(expires, env.EDITOR_SESSION_SECRET);
+  const cookie = `portfolio_editor_session=${encodeURIComponent(`${expires}.${signature}`)}`;
+  const request = new Request("https://portfolio.example/api/editor/status", { headers: { Cookie: cookie } });
+
+  const response = await getEditorStatus({ request, env });
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("Set-Cookie"), /Max-Age=31536000$/);
 });
 
 test("content validator permits only editable content fields", () => {

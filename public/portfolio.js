@@ -1,6 +1,7 @@
+import { createSequenceMatcher, isTextEntryTarget } from "/editor-sequence.js";
+
 const locale = document.documentElement.lang === "vi" ? "vi" : "en";
 const editorSessionFlag = "portfolio-editor-active";
-const editorShortcutWindowMs = 1500;
 const editableElements = () => [...document.querySelectorAll("[data-editable][data-content-key]")];
 
 const editorText = locale === "vi"
@@ -15,6 +16,7 @@ const editorText = locale === "vi"
       lock: "Khóa",
       language: "English",
       discardAndSwitch: "Bỏ các thay đổi chưa lưu và chuyển sang tiếng Anh?",
+      saveBeforeCv: "Vui lòng lưu các thay đổi trước khi mở CV.",
       saveFailed: "Không thể lưu. Vui lòng thử lại."
     }
   : {
@@ -28,13 +30,14 @@ const editorText = locale === "vi"
       lock: "Lock",
       language: "Tiếng Việt",
       discardAndSwitch: "Discard unsaved changes and switch to Vietnamese?",
+      saveBeforeCv: "Please save your changes before opening the CV.",
       saveFailed: "Could not save. Please try again."
     };
 
 let currentContent = {};
 let dirty = false;
 let toolbar;
-let editorShortcutStartedAt = 0;
+const editorSequence = createSequenceMatcher("031123");
 
 function textForDisplay(value, format) {
   if (format === "display-url") {
@@ -187,6 +190,10 @@ function enableEditor() {
 
   document.addEventListener("click", (event) => {
     if (event.target.closest("[data-editor-link]")) event.preventDefault();
+    if (dirty && event.target.closest("[data-cv-link]")) {
+      event.preventDefault();
+      window.alert(editorText.saveBeforeCv);
+    }
   }, true);
 
   toolbar.querySelector("[data-editor-save]").addEventListener("click", saveContent);
@@ -226,23 +233,12 @@ async function activateEditorFromShortcut() {
 document.addEventListener("keydown", (event) => {
   if (document.body.classList.contains("editor-active")) return;
 
-  const key = event.key.toLowerCase();
-  const modifierPressed = event.ctrlKey || event.metaKey;
-
-  if (modifierPressed && key === "e") {
-    event.preventDefault();
-    editorShortcutStartedAt = Date.now();
+  if (event.ctrlKey || event.metaKey || event.altKey || isTextEntryTarget(event.target)) {
+    editorSequence.reset();
     return;
   }
 
-  if (modifierPressed && key === "d" && Date.now() - editorShortcutStartedAt <= editorShortcutWindowMs) {
-    event.preventDefault();
-    editorShortcutStartedAt = 0;
-    activateEditorFromShortcut();
-    return;
-  }
-
-  if (key !== "control" && key !== "meta") editorShortcutStartedAt = 0;
+  if (editorSequence.push(event.key)) activateEditorFromShortcut();
 }, true);
 
 async function authenticateEditor() {

@@ -25,7 +25,9 @@ Cloudflare Pages settings:
 
 ## Private inline editor
 
-The production site includes an owner-only inline content editor backed by Cloudflare Pages Functions and KV. The private URL fragment trusts the current browser for 8 hours through a secure HTTP-only cookie. On a trusted browser, press `Ctrl+E`, then `Ctrl+D` within 1.5 seconds to enter edit mode. The editor toolbar can switch between English and Vietnamese without leaving edit mode. The API accepts only the predefined text, contact, experience, technology, and personal-project fields; section structure cannot be added, removed, or changed.
+The production site includes an owner-only inline content editor backed by Cloudflare Pages Functions and KV. The private URL fragment trusts the current browser through a secure HTTP-only cookie. On a trusted browser, type `031123` within four seconds to enter edit mode. Each successful activation renews the trusted-device cookie for 365 days. The editor toolbar can switch between English and Vietnamese without leaving edit mode. The API accepts only the predefined text, contact, experience, technology, and personal-project fields; section structure cannot be added, removed, or changed.
+
+The CV link calls `/api/cv?locale=en|vi`, which merges the static portfolio defaults with the latest saved KV content and generates an uncached PDF for the selected language. The legacy static PDF remains in `public/` for rollback.
 
 Required production bindings:
 
