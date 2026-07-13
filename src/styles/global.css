@@ -741,7 +741,7 @@ h3 {
   }
 
   .editor-active {
-    padding-bottom: 186px;
+    padding-bottom: 230px;
   }
 
   .editor-toolbar {
@@ -756,7 +756,7 @@ h3 {
 
   .editor-toolbar-actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

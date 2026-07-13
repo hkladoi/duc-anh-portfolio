@@ -25,7 +25,7 @@ Cloudflare Pages settings:
 
 ## Private inline editor
 
-The production site includes an owner-only inline content editor backed by Cloudflare Pages Functions and KV. It is activated through a private URL fragment, authenticated server-side, and stores its session in a secure HTTP-only cookie. The API accepts only the predefined text, contact, experience, technology, and personal-project fields; section structure cannot be added, removed, or changed.
+The production site includes an owner-only inline content editor backed by Cloudflare Pages Functions and KV. The private URL fragment trusts the current browser for 8 hours through a secure HTTP-only cookie. On a trusted browser, press `Ctrl+E`, then `Ctrl+D` within 1.5 seconds to enter edit mode. The editor toolbar can switch between English and Vietnamese without leaving edit mode. The API accepts only the predefined text, contact, experience, technology, and personal-project fields; section structure cannot be added, removed, or changed.
 
 Required production bindings:
 

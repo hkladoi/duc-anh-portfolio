@@ -40,6 +40,7 @@ test("editor key creates a valid, signed session", async () => {
   assert.equal(await verifyEditorKey(`${key}-wrong`, env), false);
 
   const setCookie = await createSessionCookie(env);
+  assert.match(setCookie, /HttpOnly; Secure; SameSite=Strict; Max-Age=28800$/);
   const cookie = setCookie.split(";")[0];
   const request = new Request("https://portfolio.example/api/editor/status", { headers: { Cookie: cookie } });
   assert.equal(await isEditorAuthorized(request, env), true);

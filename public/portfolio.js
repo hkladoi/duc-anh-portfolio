@@ -1,5 +1,6 @@
 const locale = document.documentElement.lang === "vi" ? "vi" : "en";
 const editorSessionFlag = "portfolio-editor-active";
+const editorShortcutWindowMs = 1500;
 const editableElements = () => [...document.querySelectorAll("[data-editable][data-content-key]")];
 
 const editorText = locale === "vi"
@@ -12,6 +13,8 @@ const editorText = locale === "vi"
       save: "Lưu thay đổi",
       undo: "Hoàn tác",
       lock: "Khóa",
+      language: "English",
+      discardAndSwitch: "Bỏ các thay đổi chưa lưu và chuyển sang tiếng Anh?",
       saveFailed: "Không thể lưu. Vui lòng thử lại."
     }
   : {
@@ -23,12 +26,15 @@ const editorText = locale === "vi"
       save: "Save changes",
       undo: "Undo",
       lock: "Lock",
+      language: "Tiếng Việt",
+      discardAndSwitch: "Discard unsaved changes and switch to Vietnamese?",
       saveFailed: "Could not save. Please try again."
     };
 
 let currentContent = {};
 let dirty = false;
 let toolbar;
+let editorShortcutStartedAt = 0;
 
 function textForDisplay(value, format) {
   if (format === "display-url") {
@@ -110,6 +116,7 @@ function buildToolbar() {
     </div>
     <p data-editor-status>${editorText.saved}</p>
     <div class="editor-toolbar-actions">
+      <button type="button" data-editor-language>${editorText.language}</button>
       <button type="button" data-editor-undo>${editorText.undo}</button>
       <button type="button" data-editor-lock>${editorText.lock}</button>
       <button class="editor-save" type="button" data-editor-save>${editorText.save}</button>
@@ -151,9 +158,16 @@ async function saveContent() {
 async function lockEditor() {
   if (dirty && !window.confirm(locale === "vi" ? "Bỏ các thay đổi chưa lưu và khóa trình chỉnh sửa?" : "Discard unsaved changes and lock the editor?")) return;
 
-  await fetch("/api/editor/session", { method: "DELETE", credentials: "same-origin" }).catch(() => undefined);
   sessionStorage.removeItem(editorSessionFlag);
   location.reload();
+}
+
+function switchLanguage() {
+  if (dirty && !window.confirm(editorText.discardAndSwitch)) return;
+
+  const languageLink = document.querySelector(".language-link");
+  const target = languageLink?.href || (locale === "vi" ? "/" : "/vi/");
+  location.assign(target);
 }
 
 function enableEditor() {
@@ -181,6 +195,7 @@ function enableEditor() {
     setDirty(false);
   });
   toolbar.querySelector("[data-editor-lock]").addEventListener("click", lockEditor);
+  toolbar.querySelector("[data-editor-language]").addEventListener("click", switchLanguage);
 
   document.addEventListener("keydown", (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
@@ -194,6 +209,41 @@ function enableEditor() {
     event.preventDefault();
   });
 }
+
+async function activateEditorFromShortcut() {
+  if (document.body.classList.contains("editor-active")) return;
+
+  try {
+    const response = await fetch("/api/editor/status", { credentials: "same-origin" });
+    if (!response.ok) throw new Error("not authorized");
+    sessionStorage.setItem(editorSessionFlag, "1");
+    enableEditor();
+  } catch {
+    sessionStorage.removeItem(editorSessionFlag);
+  }
+}
+
+document.addEventListener("keydown", (event) => {
+  if (document.body.classList.contains("editor-active")) return;
+
+  const key = event.key.toLowerCase();
+  const modifierPressed = event.ctrlKey || event.metaKey;
+
+  if (modifierPressed && key === "e") {
+    event.preventDefault();
+    editorShortcutStartedAt = Date.now();
+    return;
+  }
+
+  if (modifierPressed && key === "d" && Date.now() - editorShortcutStartedAt <= editorShortcutWindowMs) {
+    event.preventDefault();
+    editorShortcutStartedAt = 0;
+    activateEditorFromShortcut();
+    return;
+  }
+
+  if (key !== "control" && key !== "meta") editorShortcutStartedAt = 0;
+}, true);
 
 async function authenticateEditor() {
   const marker = "#edit=";
