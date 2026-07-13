@@ -41,7 +41,7 @@ export const en: PortfolioContent = {
         role: ".NET Developer",
         period: "Apr 2025 — Present",
         summary:
-          "Develop and maintain a real-estate management platform covering inventory, reservations, contracts, financial transactions, and business reports.",
+          "Develop and maintain booking, payment, and payment-collection workflows for a real-estate management platform, alongside contracts and business reporting.",
         technologies: ["ASP.NET 9", "Razor", "MySQL", "SQL Server", "Redis"]
       },
       {
@@ -115,7 +115,7 @@ export const vi: PortfolioContent = {
         role: ".NET Developer",
         period: "04/2025 — Hiện tại",
         summary:
-          "Phát triển và bảo trì nền tảng quản lý bất động sản, bao gồm tồn kho, đặt chỗ, hợp đồng, giao dịch tài chính và báo cáo kinh doanh.",
+          "Phát triển và bảo trì các nghiệp vụ booking, thanh toán và thu tiền trên nền tảng quản lý bất động sản, đồng thời hỗ trợ quy trình hợp đồng và báo cáo kinh doanh.",
         technologies: ["ASP.NET 9", "Razor", "MySQL", "SQL Server", "Redis"]
       },
       {
