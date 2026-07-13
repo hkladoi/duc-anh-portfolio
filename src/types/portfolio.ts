@@ -9,7 +9,8 @@ export interface ExperienceItem {
   company: string;
   role: string;
   period: string;
-  summary: string;
+  projectOverview: string;
+  responsibilities: string;
   technologies: string[];
 }
 

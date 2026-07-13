@@ -17,7 +17,9 @@ const labels = content.locale === "vi"
       github: "Mã nguồn",
       cv: "Hồ sơ",
       backToTop: "Lên đầu trang",
-      openProject: "Mở dự án trong tab mới"
+      openProject: "Mở dự án trong tab mới",
+      projectOverview: "Dự án",
+      responsibilities: "Công việc"
     }
   : {
       menu: "Primary navigation",
@@ -27,7 +29,9 @@ const labels = content.locale === "vi"
       github: "Code",
       cv: "Résumé",
       backToTop: "Back to top",
-      openProject: "Open project in a new tab"
+      openProject: "Open project in a new tab",
+      projectOverview: "Project",
+      responsibilities: "Work"
     };
 ---
 
@@ -106,7 +110,16 @@ const labels = content.locale === "vi"
             </div>
             <p class="experience-period" data-content-key={`experience.items.${index}.period`} data-editable>{item.period}</p>
             <div class="experience-detail">
-              <p data-content-key={`experience.items.${index}.summary`} data-editable>{item.summary}</p>
+              <div class="experience-description">
+                <p>
+                  <span>{labels.projectOverview}</span>
+                  <span data-content-key={`experience.items.${index}.projectOverview`} data-editable>{item.projectOverview}</span>
+                </p>
+                <p>
+                  <span>{labels.responsibilities}</span>
+                  <span data-content-key={`experience.items.${index}.responsibilities`} data-editable>{item.responsibilities}</span>
+                </p>
+              </div>
               <ul aria-label="Technologies">
                 {item.technologies.map((technology, technologyIndex) => (
                   <li data-content-key={`experience.items.${index}.technologies.${technologyIndex}`} data-editable>{technology}</li>

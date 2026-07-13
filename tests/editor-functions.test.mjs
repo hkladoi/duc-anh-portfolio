@@ -50,6 +50,8 @@ test("content validator permits only editable content fields", () => {
     "introduction.statement": "A clear introduction",
     "contact.email": "owner@example.com",
     "contact.github": "github.com/owner",
+    "experience.items.0.projectOverview": "A real-estate management platform",
+    "experience.items.0.responsibilities": "Develop booking and payment workflows",
     "project.url": "store.example.com"
   });
 
@@ -57,6 +59,7 @@ test("content validator permits only editable content fields", () => {
   assert.equal(content["project.url"], "https://store.example.com/");
   assert.throws(() => validateContent({ "navigation.0.label": "Changed section" }), /not editable/);
   assert.throws(() => validateContent({ "experience.items.3.company": "Added company" }), /not editable/);
+  assert.throws(() => validateContent({ "experience.items.0.summary": "Old combined description" }), /not editable/);
   assert.throws(() => validateContent({ "contact.email": "not-an-email" }), /Invalid email/);
 });
 

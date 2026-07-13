@@ -21,7 +21,8 @@ for (let index = 0; index < 3; index += 1) {
   allowedFields.set(`experience.items.${index}.company`, 180);
   allowedFields.set(`experience.items.${index}.role`, 120);
   allowedFields.set(`experience.items.${index}.period`, 100);
-  allowedFields.set(`experience.items.${index}.summary`, 700);
+  allowedFields.set(`experience.items.${index}.projectOverview`, 500);
+  allowedFields.set(`experience.items.${index}.responsibilities`, 700);
   for (let technologyIndex = 0; technologyIndex < technologyCounts[index]; technologyIndex += 1) {
     allowedFields.set(`experience.items.${index}.technologies.${technologyIndex}`, 80);
   }

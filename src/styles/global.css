@@ -343,9 +343,27 @@ h3 {
   margin: 3px 0 0;
 }
 
-.experience-detail > p {
-  margin-bottom: 20px;
+.experience-description {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.experience-description p {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  margin: 0;
   color: var(--muted);
+}
+
+.experience-description p > span:first-child {
+  padding-top: 3px;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .experience-detail ul {

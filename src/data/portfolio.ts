@@ -42,24 +42,30 @@ export const en: PortfolioContent = {
         company: "InfoPlus Co., Ltd.",
         role: ".NET Developer",
         period: "Apr 2025 — Present",
-        summary:
-          "Develop and maintain booking, payment, and payment-collection workflows for a real-estate management platform, alongside contracts and business reporting.",
+        projectOverview:
+          "An enterprise real-estate management platform connecting sales operations, contracts, finance, and business reporting.",
+        responsibilities:
+          "Develop and maintain booking, payment, and payment-collection workflows; support contract and reporting features.",
         technologies: ["ASP.NET 9", "Razor", "MySQL", "SQL Server", "Redis"]
       },
       {
         company: "Ominext JSC",
         role: ".NET Developer",
         period: "Feb 2024 — Mar 2025",
-        summary:
-          "Built housing-design and enterprise-management software; contributed to implementation, code review, testing, maintenance, and performance improvements.",
+        projectOverview:
+          "Housing-design management software and an internal platform for people, projects, revenue, and reporting.",
+        responsibilities:
+          "Develop features and interfaces; review code, write tests, maintain the products, and improve performance.",
         technologies: ["C#", "VB.NET", "WinForms", "ASP.NET", "Python", "FastAPI", "PostgreSQL"]
       },
       {
         company: "Smart Software Vietnam JSC",
         role: ".NET Developer",
         period: "Nov 2023 — Jan 2024",
-        summary:
-          "Helped build an online sneaker storefront and product-management system, from application features and UI to testing and maintenance.",
+        projectOverview:
+          "A sneaker e-commerce platform combining an online storefront with product-management capabilities.",
+        responsibilities:
+          "Develop features and interfaces with Blazor; contribute to code review, unit testing, maintenance, and performance improvements.",
         technologies: ["C#", "Blazor", "JavaScript", "REST API", "SQL Server"]
       }
     ]
@@ -118,24 +124,30 @@ export const vi: PortfolioContent = {
         company: "Công ty TNHH InfoPlus",
         role: ".NET Developer",
         period: "04/2025 — Hiện tại",
-        summary:
-          "Phát triển và bảo trì các nghiệp vụ booking, thanh toán và thu tiền trên nền tảng quản lý bất động sản, đồng thời hỗ trợ quy trình hợp đồng và báo cáo kinh doanh.",
+        projectOverview:
+          "Nền tảng quản lý bất động sản doanh nghiệp, kết nối vận hành kinh doanh, hợp đồng, tài chính và báo cáo.",
+        responsibilities:
+          "Phát triển và bảo trì các nghiệp vụ booking, thanh toán và thu tiền; đồng thời hỗ trợ tính năng hợp đồng và báo cáo.",
         technologies: ["ASP.NET 9", "Razor", "MySQL", "SQL Server", "Redis"]
       },
       {
         company: "Công ty Cổ phần Ominext",
         role: ".NET Developer",
         period: "02/2024 — 03/2025",
-        summary:
-          "Xây dựng phần mềm thiết kế nhà ở và quản trị doanh nghiệp; tham gia lập trình, review code, kiểm thử, bảo trì và tối ưu hiệu năng.",
+        projectOverview:
+          "Hệ thống quản lý thiết kế nhà ở và nền tảng nội bộ cho nhân sự, dự án, doanh thu và báo cáo.",
+        responsibilities:
+          "Phát triển tính năng và giao diện; review code, viết test, bảo trì sản phẩm và tối ưu hiệu năng.",
         technologies: ["C#", "VB.NET", "WinForms", "ASP.NET", "Python", "FastAPI", "PostgreSQL"]
       },
       {
         company: "Công ty Cổ phần Smart Software Việt Nam",
         role: ".NET Developer",
         period: "11/2023 — 01/2024",
-        summary:
-          "Tham gia xây dựng cửa hàng sneaker và hệ thống quản lý sản phẩm trực tuyến, từ tính năng, giao diện đến kiểm thử và bảo trì.",
+        projectOverview:
+          "Nền tảng thương mại điện tử sneaker, kết hợp cửa hàng trực tuyến và chức năng quản lý sản phẩm.",
+        responsibilities:
+          "Phát triển tính năng và giao diện bằng Blazor; tham gia review, unit test, bảo trì và tối ưu hiệu năng.",
         technologies: ["C#", "Blazor", "JavaScript", "REST API", "SQL Server"]
       }
     ]
