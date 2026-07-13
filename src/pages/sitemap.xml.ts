@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = ({ site }) => {
-  const base = site ?? new URL("https://hkladoi.org");
+  const base = site ?? new URL("https://portfolio.hkladoi.tech");
   const urls = [new URL("/", base), new URL("/vi/", base)];
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
