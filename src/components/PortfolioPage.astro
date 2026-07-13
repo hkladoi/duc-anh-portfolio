@@ -7,12 +7,31 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const email = "mailto:anhtrinhtran3@gmail.com";
+const emailAddress = "anhtrinhtran3@gmail.com";
+const email = `mailto:${emailAddress}`;
 const github = "https://github.com/hkladoi";
 const currentYear = new Date().getFullYear();
 const labels = content.locale === "vi"
-  ? { menu: "Điều hướng chính", email: "Email", github: "GitHub", cv: "CV PDF", team: "Đội ngũ", scroll: "Cuộn để khám phá" }
-  : { menu: "Primary navigation", email: "Email", github: "GitHub", cv: "PDF résumé", team: "Team", scroll: "Scroll to explore" };
+  ? {
+      menu: "Điều hướng chính",
+      location: "Địa điểm",
+      status: "Trạng thái",
+      email: "Email",
+      github: "Mã nguồn",
+      cv: "Hồ sơ",
+      backToTop: "Lên đầu trang",
+      openProject: "Mở dự án trong tab mới"
+    }
+  : {
+      menu: "Primary navigation",
+      location: "Location",
+      status: "Status",
+      email: "Email",
+      github: "Code",
+      cv: "Résumé",
+      backToTop: "Back to top",
+      openProject: "Open project in a new tab"
+    };
 ---
 
 <BaseLayout
@@ -23,153 +42,101 @@ const labels = content.locale === "vi"
 >
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="monogram" href="#top" aria-label="Trịnh Trần Đức Anh - Home">DA<span>.</span></a>
+      <a class="wordmark" href="#top" aria-label="Trịnh Trần Đức Anh">Đức Anh<span>.</span></a>
       <nav aria-label={labels.menu}>
         <ul class="nav-list">
-          {content.navigation.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
+          {content.navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
         </ul>
       </nav>
-      <div class="header-actions">
-        <a class="language-link" href={content.alternateHref} hreflang={content.locale === "en" ? "vi" : "en"}>
-          {content.alternateLanguageLabel}
-        </a>
-        <a class="header-cv" href="/cv-trinh-tran-duc-anh.pdf" target="_blank" rel="noreferrer">CV <span aria-hidden="true">↗</span></a>
-      </div>
+      <a class="language-link" href={content.alternateHref} hreflang={content.locale === "en" ? "vi" : "en"}>
+        {content.alternateLanguageLabel}
+      </a>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero shell" id="top" aria-labelledby="hero-title">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-copy" data-reveal>
-        <p class="eyebrow">{content.hero.eyebrow}</p>
-        <p class="hero-role">{content.hero.role}</p>
-        <h1 id="hero-title">{content.hero.statement}</h1>
-        <p class="hero-intro">{content.hero.introduction}</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#work">{content.hero.primaryCta} <span aria-hidden="true">↓</span></a>
-          <a class="button button-secondary" href="/cv-trinh-tran-duc-anh.pdf" target="_blank" rel="noreferrer">
-            {content.hero.secondaryCta} <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+    <section class="intro shell" id="top" aria-labelledby="intro-title">
+      <div class="intro-heading">
+        <p class="section-label">{content.introduction.label}</p>
+        <h1 id="intro-title">{content.introduction.name}<span>.</span></h1>
+        <p class="role">{content.introduction.role}</p>
       </div>
-      <aside class="hero-aside" data-reveal>
-        <div class="availability"><span class="pulse" aria-hidden="true"></span>{content.hero.availability}</div>
-        <div class="hero-meta">
-          <span>{content.hero.location}</span>
-          <span>.NET · C# · SQL</span>
-        </div>
-      </aside>
-      <div class="scroll-hint" aria-hidden="true"><span>{labels.scroll}</span><i></i></div>
-      <div class="hero-mark" aria-hidden="true">DA</div>
-    </section>
-
-    <section class="section shell" id="about" aria-labelledby="about-title">
-      <div class="section-heading" data-reveal>
-        <p class="eyebrow">{content.about.eyebrow}</p>
-        <h2 id="about-title">{content.about.title}</h2>
-      </div>
-      <div class="about-layout">
-        <div class="about-copy" data-reveal>
-          {content.about.paragraphs.map((paragraph, index) => (
-            <p class={index === 0 ? "lead" : ""}>{paragraph}</p>
-          ))}
-        </div>
-        <ol class="principles" data-reveal>
-          {content.about.principles.map((principle) => (
-            <li>
-              <span class="principle-number">{principle.number}</span>
-              <div><h3>{principle.title}</h3><p>{principle.description}</p></div>
-            </li>
-          ))}
-        </ol>
+      <div class="intro-copy">
+        <p class="statement">{content.introduction.statement}</p>
+        <p class="body-copy">{content.introduction.body}</p>
+        <dl class="intro-meta">
+          <div><dt>{labels.location}</dt><dd>{content.introduction.location}</dd></div>
+          <div><dt>{labels.status}</dt><dd><span class="status-dot" aria-hidden="true"></span>{content.introduction.availability}</dd></div>
+        </dl>
       </div>
     </section>
 
-    <section class="section section-dark" id="experience" aria-labelledby="experience-title">
-      <div class="shell">
-        <div class="section-heading section-heading-split" data-reveal>
-          <div><p class="eyebrow">{content.experience.eyebrow}</p><h2 id="experience-title">{content.experience.title}</h2></div>
-          <p>{content.experience.intro}</p>
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="shell section-grid">
+        <div>
+          <p class="section-label">01 / {content.contact.label}</p>
+          <h2 id="contact-title">{content.contact.title}</h2>
         </div>
-        <div class="timeline">
-          {content.experience.items.map((item, index) => (
-            <article class="timeline-item" data-reveal>
-              <div class="timeline-index">0{index + 1}</div>
-              <div class="timeline-company"><h3>{item.company}</h3><p>{item.role}</p></div>
-              <div class="timeline-content">
-                <p class="timeline-period">{item.period}</p>
-                <p class="timeline-summary">{item.summary}</p>
-                <ul>{item.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
-                <div class="tag-list">{item.technologies.map((technology) => <span>{technology}</span>)}</div>
-              </div>
-            </article>
-          ))}
+        <div>
+          <p class="section-intro">{content.contact.body}</p>
+          <div class="contact-list">
+            <a href={email}>
+              <span>{labels.email}</span><strong>{emailAddress}</strong><i aria-hidden="true">↗</i>
+            </a>
+            <a href={github} target="_blank" rel="noreferrer">
+              <span>{labels.github}</span><strong>{content.contact.githubLabel}</strong><i aria-hidden="true">↗</i>
+            </a>
+            <a href="/cv-trinh-tran-duc-anh.pdf" target="_blank" rel="noreferrer">
+              <span>{labels.cv}</span><strong>{content.contact.cvLabel}</strong><i aria-hidden="true">↗</i>
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section shell" id="work" aria-labelledby="work-title">
-      <div class="section-heading section-heading-split" data-reveal>
-        <div><p class="eyebrow">{content.projects.eyebrow}</p><h2 id="work-title">{content.projects.title}</h2></div>
-        <p>{content.projects.intro}</p>
+    <section class="section shell" id="experience" aria-labelledby="experience-title">
+      <div class="section-grid section-heading">
+        <p class="section-label">02 / {content.experience.label}</p>
+        <h2 id="experience-title">{content.experience.title}</h2>
       </div>
-      <div class="projects">
-        {content.projects.items.map((project) => (
-          <article class="project" data-reveal>
-            <div class="project-topline"><span>{project.index}</span><span>{project.context}</span></div>
-            <h3>{project.title}</h3>
-            <p class="project-description">{project.description}</p>
-            <p class="project-contribution">{project.contribution}</p>
-            <div class="tag-list tag-list-dark">{project.technologies.map((technology) => <span>{technology}</span>)}</div>
+      <div class="experience-list">
+        {content.experience.items.map((item, index) => (
+          <article class="experience-item">
+            <span class="experience-index">0{index + 1}</span>
+            <div class="experience-company">
+              <h3>{item.company}</h3>
+              <p>{item.role}</p>
+            </div>
+            <p class="experience-period">{item.period}</p>
+            <div class="experience-detail">
+              <p>{item.summary}</p>
+              <ul aria-label="Technologies">
+                {item.technologies.map((technology) => <li>{technology}</li>)}
+              </ul>
+            </div>
           </article>
         ))}
       </div>
     </section>
 
-    <section class="section section-accent" id="skills" aria-labelledby="skills-title">
-      <div class="shell">
-        <div class="section-heading section-heading-split" data-reveal>
-          <div><p class="eyebrow">{content.skills.eyebrow}</p><h2 id="skills-title">{content.skills.title}</h2></div>
-          <p>{content.skills.intro}</p>
+    <section class="project-section" id="project" aria-labelledby="project-title">
+      <div class="shell section-grid">
+        <div>
+          <p class="section-label">03 / {content.project.label}</p>
+          <p class="project-type">{content.project.type}</p>
         </div>
-        <div class="skills-grid">
-          {content.skills.groups.map((group, index) => (
-            <article class="skill-group" data-reveal>
-              <span>0{index + 1}</span><h3>{group.title}</h3>
-              <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
-            </article>
-          ))}
-        </div>
-        <div class="strengths" data-reveal>
-          <h3>{content.skills.strengthsTitle}</h3>
-          <ul>{content.skills.strengths.map((strength) => <li><span aria-hidden="true">↗</span>{strength}</li>)}</ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section shell education" aria-labelledby="education-title">
-      <div data-reveal><p class="eyebrow">{content.education.eyebrow}</p><h2 id="education-title">{content.education.title}</h2></div>
-      <div class="education-card" data-reveal>
-        <div><h3>{content.education.school}</h3><p>{content.education.program}</p></div>
-        <div><p>{content.education.period}</p><p>{content.education.language}</p></div>
-      </div>
-    </section>
-
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div class="shell contact-inner">
-        <div data-reveal>
-          <p class="eyebrow">{content.contact.eyebrow}</p>
-          <h2 id="contact-title">{content.contact.title}</h2>
-          <p class="contact-body">{content.contact.body}</p>
-        </div>
-        <div class="contact-actions" data-reveal>
-          <a href={email} class="contact-link"><span>{labels.email}</span>{content.contact.emailLabel}<i aria-hidden="true">↗</i></a>
-          <a href={github} target="_blank" rel="noreferrer" class="contact-link"><span>{labels.github}</span>{content.contact.githubLabel}<i aria-hidden="true">↗</i></a>
-          <p>{content.contact.note}</p>
-        </div>
+        <a
+          class="project-card"
+          href={content.project.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${content.project.title} — ${labels.openProject}`}
+        >
+          <span class="project-domain">store.hkladoi.tech</span>
+          <h2 id="project-title">{content.project.title}</h2>
+          <p>{content.project.description}</p>
+          <strong>{content.project.visitLabel}<i aria-hidden="true">↗</i></strong>
+        </a>
       </div>
     </section>
   </main>
@@ -178,7 +145,7 @@ const labels = content.locale === "vi"
     <div class="shell">
       <p>© {currentYear} Trịnh Trần Đức Anh</p>
       <p>{content.footer}</p>
-      <a href="#top" aria-label={content.locale === "vi" ? "Lên đầu trang" : "Back to top"}>↑</a>
+      <a href="#top" aria-label={labels.backToTop}>↑</a>
     </div>
   </footer>
 </BaseLayout>

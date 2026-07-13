@@ -1,6 +1,6 @@
 # Trịnh Trần Đức Anh - Portfolio
 
-Bilingual English/Vietnamese portfolio built with Astro and TypeScript, prepared for Cloudflare Pages.
+Bilingual English/Vietnamese portfolio built with Astro and TypeScript. The site focuses on a short introduction, contact details, work experience, and the live personal project at `store.hkladoi.tech`.
 
 ## Local development
 
