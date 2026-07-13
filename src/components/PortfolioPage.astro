@@ -7,9 +7,6 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const emailAddress = "anhtrinhtran3@gmail.com";
-const email = `mailto:${emailAddress}`;
-const github = "https://github.com/hkladoi";
 const currentYear = new Date().getFullYear();
 const labels = content.locale === "vi"
   ? {
@@ -58,15 +55,15 @@ const labels = content.locale === "vi"
     <section class="intro shell" id="top" aria-labelledby="intro-title">
       <div class="intro-heading">
         <p class="section-label">{content.introduction.label}</p>
-        <h1 id="intro-title">{content.introduction.name}<span>.</span></h1>
-        <p class="role">{content.introduction.role}</p>
+        <h1 id="intro-title"><span data-content-key="introduction.name" data-editable>{content.introduction.name}</span><span>.</span></h1>
+        <p class="role" data-content-key="introduction.role" data-editable>{content.introduction.role}</p>
       </div>
       <div class="intro-copy">
-        <p class="statement">{content.introduction.statement}</p>
-        <p class="body-copy">{content.introduction.body}</p>
+        <p class="statement" data-content-key="introduction.statement" data-editable>{content.introduction.statement}</p>
+        <p class="body-copy" data-content-key="introduction.body" data-editable>{content.introduction.body}</p>
         <dl class="intro-meta">
-          <div><dt>{labels.location}</dt><dd>{content.introduction.location}</dd></div>
-          <div><dt>{labels.status}</dt><dd><span class="status-dot" aria-hidden="true"></span>{content.introduction.availability}</dd></div>
+          <div><dt>{labels.location}</dt><dd data-content-key="introduction.location" data-editable>{content.introduction.location}</dd></div>
+          <div><dt>{labels.status}</dt><dd><span class="status-dot" aria-hidden="true"></span><span data-content-key="introduction.availability" data-editable>{content.introduction.availability}</span></dd></div>
         </dl>
       </div>
     </section>
@@ -75,16 +72,16 @@ const labels = content.locale === "vi"
       <div class="shell section-grid">
         <div>
           <p class="section-label">01 / {content.contact.label}</p>
-          <h2 id="contact-title">{content.contact.title}</h2>
+          <h2 id="contact-title" data-content-key="contact.title" data-editable>{content.contact.title}</h2>
         </div>
         <div>
-          <p class="section-intro">{content.contact.body}</p>
+          <p class="section-intro" data-content-key="contact.body" data-editable>{content.contact.body}</p>
           <div class="contact-list">
-            <a href={email}>
-              <span>{labels.email}</span><strong>{emailAddress}</strong><i aria-hidden="true">↗</i>
+            <a href={`mailto:${content.contact.email}`} data-content-href="contact.email" data-href-format="email" data-editor-link>
+              <span>{labels.email}</span><strong data-content-key="contact.email" data-editable>{content.contact.email}</strong><i aria-hidden="true">↗</i>
             </a>
-            <a href={github} target="_blank" rel="noreferrer">
-              <span>{labels.github}</span><strong>{content.contact.githubLabel}</strong><i aria-hidden="true">↗</i>
+            <a href={content.contact.github} target="_blank" rel="noreferrer" data-content-href="contact.github" data-editor-link>
+              <span>{labels.github}</span><strong data-content-key="contact.github" data-content-format="display-url" data-editable>{content.contact.github.replace(/^https?:\/\//, "")}</strong><i aria-hidden="true">↗</i>
             </a>
             <a href="/cv-trinh-tran-duc-anh.pdf" target="_blank" rel="noreferrer">
               <span>{labels.cv}</span><strong>{content.contact.cvLabel}</strong><i aria-hidden="true">↗</i>
@@ -104,14 +101,16 @@ const labels = content.locale === "vi"
           <article class="experience-item">
             <span class="experience-index">0{index + 1}</span>
             <div class="experience-company">
-              <h3>{item.company}</h3>
-              <p>{item.role}</p>
+              <h3 data-content-key={`experience.items.${index}.company`} data-editable>{item.company}</h3>
+              <p data-content-key={`experience.items.${index}.role`} data-editable>{item.role}</p>
             </div>
-            <p class="experience-period">{item.period}</p>
+            <p class="experience-period" data-content-key={`experience.items.${index}.period`} data-editable>{item.period}</p>
             <div class="experience-detail">
-              <p>{item.summary}</p>
+              <p data-content-key={`experience.items.${index}.summary`} data-editable>{item.summary}</p>
               <ul aria-label="Technologies">
-                {item.technologies.map((technology) => <li>{technology}</li>)}
+                {item.technologies.map((technology, technologyIndex) => (
+                  <li data-content-key={`experience.items.${index}.technologies.${technologyIndex}`} data-editable>{technology}</li>
+                ))}
               </ul>
             </div>
           </article>
@@ -123,7 +122,7 @@ const labels = content.locale === "vi"
       <div class="shell section-grid">
         <div>
           <p class="section-label">03 / {content.project.label}</p>
-          <p class="project-type">{content.project.type}</p>
+          <p class="project-type" data-content-key="project.type" data-editable>{content.project.type}</p>
         </div>
         <a
           class="project-card"
@@ -131,10 +130,12 @@ const labels = content.locale === "vi"
           target="_blank"
           rel="noreferrer"
           aria-label={`${content.project.title} — ${labels.openProject}`}
+          data-content-href="project.url"
+          data-editor-link
         >
-          <span class="project-domain">store.hkladoi.tech</span>
-          <h2 id="project-title">{content.project.title}</h2>
-          <p>{content.project.description}</p>
+          <span class="project-domain" data-content-key="project.url" data-content-format="display-url" data-editable>{content.project.url.replace(/^https?:\/\//, "")}</span>
+          <h2 id="project-title" data-content-key="project.title" data-editable>{content.project.title}</h2>
+          <p data-content-key="project.description" data-editable>{content.project.description}</p>
           <strong>{content.project.visitLabel}<i aria-hidden="true">↗</i></strong>
         </a>
       </div>
@@ -148,4 +149,5 @@ const labels = content.locale === "vi"
       <a href="#top" aria-label={labels.backToTop}>↑</a>
     </div>
   </footer>
+  <script is:inline type="module" src="/portfolio.js"></script>
 </BaseLayout>

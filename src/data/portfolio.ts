@@ -28,6 +28,8 @@ export const en: PortfolioContent = {
     label: "Contact",
     title: "Let’s work together.",
     body: "For a role, a project, or simply a technical conversation, the quickest way to reach me is by email.",
+    email: "anhtrinhtran3@gmail.com",
+    github: "https://github.com/hkladoi",
     emailLabel: "Email me",
     githubLabel: "GitHub",
     cvLabel: "View CV"
@@ -102,6 +104,8 @@ export const vi: PortfolioContent = {
     label: "Liên hệ",
     title: "Cùng làm việc nhé.",
     body: "Nếu bạn muốn trao đổi về một vị trí, một dự án hoặc đơn giản là một câu chuyện kỹ thuật, email là cách nhanh nhất để liên hệ với tôi.",
+    email: "anhtrinhtran3@gmail.com",
+    github: "https://github.com/hkladoi",
     emailLabel: "Gửi email",
     githubLabel: "GitHub",
     cvLabel: "Xem CV"

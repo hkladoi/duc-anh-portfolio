@@ -35,6 +35,8 @@ export interface PortfolioContent {
     label: string;
     title: string;
     body: string;
+    email: string;
+    github: string;
     emailLabel: string;
     githubLabel: string;
     cvLabel: string;

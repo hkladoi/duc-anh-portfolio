@@ -106,7 +106,7 @@ h3 {
 }
 
 .wordmark span,
-.intro h1 span {
+.intro h1 > span:last-child {
   color: var(--accent);
 }
 
@@ -456,6 +456,121 @@ h3 {
   text-decoration: none;
 }
 
+.editor-active {
+  padding-bottom: 108px;
+}
+
+.editor-active [data-editable] {
+  border-radius: 3px;
+  outline: 1px dashed color-mix(in srgb, var(--accent) 62%, transparent);
+  outline-offset: 5px;
+  cursor: text;
+  transition: outline-color 150ms ease, background 150ms ease;
+}
+
+.editor-active [data-editable]:hover,
+.editor-active [data-editable]:focus {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  outline: 2px solid var(--accent);
+}
+
+.editor-active .contact-section [data-editable]:hover,
+.editor-active .contact-section [data-editable]:focus,
+.editor-active .project-card [data-editable]:hover,
+.editor-active .project-card [data-editable]:focus {
+  background: rgba(255, 255, 255, 0.12);
+  outline-color: rgba(255, 255, 255, 0.9);
+}
+
+.editor-toolbar {
+  position: fixed;
+  z-index: 1000;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  gap: 24px;
+  align-items: center;
+  max-width: 1040px;
+  min-height: 76px;
+  margin-inline: auto;
+  padding: 14px 16px 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  color: white;
+  background: rgba(18, 18, 17, 0.96);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.editor-toolbar-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.editor-toolbar-copy strong {
+  font-size: 14px;
+}
+
+.editor-toolbar-copy strong span {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: #b9ccff;
+  background: rgba(38, 103, 255, 0.25);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.editor-toolbar-copy small {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+}
+
+.editor-toolbar > p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.editor-dirty .editor-toolbar > p {
+  color: #ffd277;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-toolbar button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  color: white;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.editor-toolbar button.editor-save {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.editor-toolbar button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .not-found {
   display: grid;
   min-height: 100vh;
@@ -605,6 +720,25 @@ h3 {
 
   .site-footer p:nth-child(2) {
     display: none;
+  }
+
+  .editor-active {
+    padding-bottom: 186px;
+  }
+
+  .editor-toolbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    min-height: 0;
+  }
+
+  .editor-toolbar > p {
+    display: none;
+  }
+
+  .editor-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
