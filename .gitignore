@@ -1,0 +1,11 @@
+node_modules/
+node_modules-stale*/
+dist/
+.astro/
+.wrangler/
+.env
+tmp/
+.pnpm-store/
+.agents/
+.git-local/
+*.log
