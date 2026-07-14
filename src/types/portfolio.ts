@@ -14,6 +14,13 @@ export interface ExperienceItem {
   technologies: string[];
 }
 
+export interface ProjectItem {
+  title: string;
+  type: string;
+  description: string;
+  url: string;
+}
+
 export interface PortfolioContent {
   locale: Locale;
   alternateLanguageLabel: string;
@@ -49,11 +56,8 @@ export interface PortfolioContent {
   };
   project: {
     label: string;
-    title: string;
-    type: string;
-    description: string;
     visitLabel: string;
-    url: string;
+    items: ProjectItem[];
   };
   footer: string;
 }

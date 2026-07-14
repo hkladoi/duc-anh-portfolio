@@ -76,15 +76,20 @@ test("content validator permits only editable content fields", () => {
     "introduction.statement": "A clear introduction",
     "contact.email": "owner@example.com",
     "contact.github": "github.com/owner",
+    "experience.itemCount": "4",
     "experience.items.0.projectOverview": "A real-estate management platform",
     "experience.items.0.responsibilities": "Develop booking and payment workflows",
-    "project.url": "store.example.com"
+    "experience.items.3.company": "Added company",
+    "project.itemCount": "2",
+    "project.items.1.url": "store.example.com"
   });
 
   assert.equal(content["contact.github"], "https://github.com/owner");
-  assert.equal(content["project.url"], "https://store.example.com/");
+  assert.equal(content["project.items.1.url"], "https://store.example.com/");
+  assert.equal(content["experience.items.3.company"], "Added company");
   assert.throws(() => validateContent({ "navigation.0.label": "Changed section" }), /not editable/);
-  assert.throws(() => validateContent({ "experience.items.3.company": "Added company" }), /not editable/);
+  assert.throws(() => validateContent({ "experience.itemCount": "3", "experience.items.3.company": "Added company" }), /outside experience item count/);
+  assert.throws(() => validateContent({ "project.itemCount": "11" }), /Invalid value/);
   assert.throws(() => validateContent({ "experience.items.0.summary": "Old combined description" }), /not editable/);
   assert.throws(() => validateContent({ "contact.email": "not-an-email" }), /Invalid email/);
 });
@@ -100,7 +105,8 @@ test("authorized API saves content and public API returns it", async () => {
   const content = {
     "introduction.statement": "Updated directly on the page",
     "contact.email": "owner@example.com",
-    "project.url": "https://store.example.com"
+    "project.itemCount": "1",
+    "project.items.0.url": "https://store.example.com"
   };
 
   const saveRequest = new Request("https://portfolio.example/api/editor/content?locale=en", {
@@ -116,7 +122,7 @@ test("authorized API saves content and public API returns it", async () => {
   assert.equal(publicResponse.status, 200);
   assert.deepEqual(await publicResponse.json(), {
     ...content,
-    "project.url": "https://store.example.com/"
+    "project.items.0.url": "https://store.example.com/"
   });
 });
 

@@ -1,4 +1,10 @@
-const allowedFields = new Map([
+export const CONTENT_LIMITS = Object.freeze({
+  experienceItems: 10,
+  projectItems: 10,
+  technologies: 12
+});
+
+const staticFields = new Map([
   ["introduction.name", 120],
   ["introduction.role", 120],
   ["introduction.statement", 260],
@@ -8,31 +14,67 @@ const allowedFields = new Map([
   ["contact.title", 180],
   ["contact.body", 600],
   ["contact.email", 254],
-  ["contact.github", 400],
-  ["project.type", 160],
-  ["project.title", 180],
-  ["project.description", 700],
-  ["project.url", 400]
+  ["contact.github", 400]
 ]);
 
-const technologyCounts = [5, 7, 5];
+const experienceFields = new Map([
+  ["company", 180],
+  ["role", 120],
+  ["period", 100],
+  ["projectOverview", 500],
+  ["responsibilities", 700]
+]);
 
-for (let index = 0; index < 3; index += 1) {
-  allowedFields.set(`experience.items.${index}.company`, 180);
-  allowedFields.set(`experience.items.${index}.role`, 120);
-  allowedFields.set(`experience.items.${index}.period`, 100);
-  allowedFields.set(`experience.items.${index}.projectOverview`, 500);
-  allowedFields.set(`experience.items.${index}.responsibilities`, 700);
-  for (let technologyIndex = 0; technologyIndex < technologyCounts[index]; technologyIndex += 1) {
-    allowedFields.set(`experience.items.${index}.technologies.${technologyIndex}`, 80);
-  }
-}
+const projectFields = new Map([
+  ["type", 160],
+  ["title", 180],
+  ["description", 700],
+  ["url", 400]
+]);
 
 function normalizeUrl(value) {
   const candidate = /^https:\/\//i.test(value) ? value : `https://${value.replace(/^https?:\/\//i, "")}`;
   const url = new URL(candidate);
   if (url.protocol !== "https:" || !url.hostname) throw new Error("Only HTTPS URLs are allowed");
   return url.toString();
+}
+
+function parseCount(value, max, key) {
+  if (!/^\d+$/.test(value)) throw new Error(`Invalid value for ${key}`);
+  const count = Number(value);
+  if (count < 1 || count > max) throw new Error(`Invalid value for ${key}`);
+  return String(count);
+}
+
+function fieldRule(key) {
+  if (staticFields.has(key)) return { maxLength: staticFields.get(key) };
+  if (key === "experience.itemCount") return { count: CONTENT_LIMITS.experienceItems };
+  if (key === "project.itemCount") return { count: CONTENT_LIMITS.projectItems };
+
+  let match = key.match(/^experience\.items\.(\d+)\.(company|role|period|projectOverview|responsibilities)$/);
+  if (match) {
+    const index = Number(match[1]);
+    if (index < CONTENT_LIMITS.experienceItems) return { maxLength: experienceFields.get(match[2]), kind: "experience", index };
+    return null;
+  }
+
+  match = key.match(/^experience\.items\.(\d+)\.technologies\.(\d+)$/);
+  if (match) {
+    const index = Number(match[1]);
+    const technologyIndex = Number(match[2]);
+    if (index < CONTENT_LIMITS.experienceItems && technologyIndex < CONTENT_LIMITS.technologies) {
+      return { maxLength: 80, kind: "experience", index };
+    }
+    return null;
+  }
+
+  match = key.match(/^project\.items\.(\d+)\.(type|title|description|url)$/);
+  if (match) {
+    const index = Number(match[1]);
+    if (index < CONTENT_LIMITS.projectItems) return { maxLength: projectFields.get(match[2]), kind: "project", index };
+  }
+
+  return null;
 }
 
 export function parseLocale(value) {
@@ -42,19 +84,31 @@ export function parseLocale(value) {
 export function validateContent(input) {
   if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Invalid content payload");
   const entries = Object.entries(input);
-  if (entries.length === 0 || entries.length > allowedFields.size) throw new Error("Invalid number of content fields");
+  if (entries.length === 0 || entries.length > 240) throw new Error("Invalid number of content fields");
 
   const content = {};
+  const counts = {
+    experience: typeof input["experience.itemCount"] === "string" ? Number(input["experience.itemCount"]) : null,
+    project: typeof input["project.itemCount"] === "string" ? Number(input["project.itemCount"]) : null
+  };
+
   for (const [key, rawValue] of entries) {
-    const maxLength = allowedFields.get(key);
-    if (!maxLength) throw new Error(`Field is not editable: ${key}`);
+    const rule = fieldRule(key);
+    if (!rule) throw new Error(`Field is not editable: ${key}`);
     if (typeof rawValue !== "string") throw new Error(`Invalid value for ${key}`);
 
     const value = rawValue.replace(/\s+/g, " ").trim();
-    if (!value || value.length > maxLength) throw new Error(`Invalid length for ${key}`);
+    if (rule.count) {
+      content[key] = parseCount(value, rule.count, key);
+      continue;
+    }
 
+    if (!value || value.length > rule.maxLength) throw new Error(`Invalid length for ${key}`);
+    if (rule.kind && counts[rule.kind] !== null && rule.index >= counts[rule.kind]) {
+      throw new Error(`Field is outside ${rule.kind} item count: ${key}`);
+    }
     if (key === "contact.email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw new Error("Invalid email address");
-    content[key] = key === "contact.github" || key === "project.url" ? normalizeUrl(value) : value;
+    content[key] = key === "contact.github" || key.endsWith(".url") ? normalizeUrl(value) : value;
   }
 
   return content;

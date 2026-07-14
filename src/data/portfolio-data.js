@@ -70,12 +70,16 @@ export const en = {
   },
   project: {
     label: "Personal project",
-    title: "Bazaizai Store",
-    type: "E-commerce website",
-    description:
-      "A live online store built as a practical product project, featuring a browsable catalog and product filtering for a straightforward shopping experience.",
     visitLabel: "Visit store",
-    url: "https://store.hkladoi.tech"
+    items: [
+      {
+        title: "Bazaizai Store",
+        type: "E-commerce website",
+        description:
+          "A live online store built as a practical product project, featuring a browsable catalog and product filtering for a straightforward shopping experience.",
+        url: "https://store.hkladoi.tech"
+      }
+    ]
   },
   footer: "Built in Hanoi."
 };
@@ -152,12 +156,16 @@ export const vi = {
   },
   project: {
     label: "Dự án cá nhân",
-    title: "Bazaizai Store",
-    type: "Website thương mại điện tử",
-    description:
-      "Một cửa hàng trực tuyến đang hoạt động, được xây dựng như một sản phẩm thực tế với danh mục và bộ lọc sản phẩm, hướng tới trải nghiệm mua sắm gọn gàng và dễ sử dụng.",
     visitLabel: "Mở cửa hàng",
-    url: "https://store.hkladoi.tech"
+    items: [
+      {
+        title: "Bazaizai Store",
+        type: "Website thương mại điện tử",
+        description:
+          "Một cửa hàng trực tuyến đang hoạt động, được xây dựng như một sản phẩm thực tế với danh mục và bộ lọc sản phẩm, hướng tới trải nghiệm mua sắm gọn gàng và dễ sử dụng.",
+        url: "https://store.hkladoi.tech"
+      }
+    ]
   },
   footer: "Được xây dựng tại Hà Nội."
 };

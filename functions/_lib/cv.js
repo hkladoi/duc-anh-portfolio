@@ -389,26 +389,31 @@ function drawExperience(layout, content, copy) {
       { text: `- ${copy.labels.technologies} `, bold: true },
       { text: item.technologies.join(", ") }
     ]);
-    layout.richParagraph([
-      { text: `- ${copy.labels.teamSize} `, bold: true },
-      { text: `${copy.teamSizes[index]} ${copy.labels.people}` }
-    ], { after: 1 });
+    if (copy.teamSizes[index]) {
+      layout.richParagraph([
+        { text: `- ${copy.labels.teamSize} `, bold: true },
+        { text: `${copy.teamSizes[index]} ${copy.labels.people}` }
+      ], { after: 1 });
+    }
 
     if (index < content.experience.items.length - 1) layout.divider();
   }
 }
 
-function drawProject(layout, project, copy) {
-  layout.ensure(60);
-  layout.richParagraph([{ text: project.title, bold: true }, { text: ` - ${project.type}` }], { size: 9.4, after: 4 });
-  layout.richParagraph([
-    { text: `- ${copy.labels.description} `, bold: true },
-    { text: project.description }
-  ]);
-  layout.richParagraph([
-    { text: `- ${copy.labels.url} `, bold: true },
-    { text: project.url, link: project.url }
-  ], { after: 5 });
+function drawProjects(layout, projects, copy) {
+  for (const [index, project] of projects.entries()) {
+    layout.ensure(60);
+    layout.richParagraph([{ text: project.title, bold: true }, { text: ` - ${project.type}` }], { size: 9.4, after: 4 });
+    layout.richParagraph([
+      { text: `- ${copy.labels.description} `, bold: true },
+      { text: project.description }
+    ]);
+    layout.richParagraph([
+      { text: `- ${copy.labels.url} `, bold: true },
+      { text: project.url, link: project.url }
+    ], { after: 5 });
+    if (index < projects.length - 1) layout.divider();
+  }
 }
 
 function drawSkills(layout, groups) {
@@ -452,7 +457,7 @@ export async function buildCvPdf(content, locale, fontBytes) {
 
   if (layout.pages.length === 1) layout.newPage();
   layout.section(copy.sections.project);
-  drawProject(layout, content.project, copy);
+  drawProjects(layout, content.project.items, copy);
 
   layout.section(copy.sections.skills);
   drawSkills(layout, copy.skillGroups);

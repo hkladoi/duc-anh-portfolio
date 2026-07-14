@@ -19,7 +19,13 @@ const labels = content.locale === "vi"
       backToTop: "Lên đầu trang",
       openProject: "Mở dự án trong tab mới",
       projectOverview: "Dự án",
-      responsibilities: "Công việc"
+      responsibilities: "Công việc",
+      addExperience: "+ Thêm kinh nghiệm",
+      addProject: "+ Thêm dự án",
+      drag: "Kéo để sắp xếp",
+      moveUp: "Chuyển lên",
+      moveDown: "Chuyển xuống",
+      remove: "Xóa dòng"
     }
   : {
       menu: "Primary navigation",
@@ -31,7 +37,13 @@ const labels = content.locale === "vi"
       backToTop: "Back to top",
       openProject: "Open project in a new tab",
       projectOverview: "Project",
-      responsibilities: "Work"
+      responsibilities: "Work",
+      addExperience: "+ Add experience",
+      addProject: "+ Add project",
+      drag: "Drag to reorder",
+      moveUp: "Move up",
+      moveDown: "Move down",
+      remove: "Delete row"
     };
 ---
 
@@ -98,12 +110,21 @@ const labels = content.locale === "vi"
     <section class="section shell" id="experience" aria-labelledby="experience-title">
       <div class="section-grid section-heading">
         <p class="section-label">02 / {content.experience.label}</p>
-        <h2 id="experience-title">{content.experience.title}</h2>
+        <div class="section-heading-action">
+          <h2 id="experience-title">{content.experience.title}</h2>
+          <button class="editor-add-row" type="button" data-editor-only data-add-row="experience">{labels.addExperience}</button>
+        </div>
       </div>
-      <div class="experience-list">
+      <div class="experience-list" data-row-container="experience">
         {content.experience.items.map((item, index) => (
-          <article class="experience-item">
-            <span class="experience-index">0{index + 1}</span>
+          <article class="experience-item" data-editor-row="experience">
+            <div class="editor-row-controls" data-editor-only>
+              <button class="editor-drag-handle" type="button" draggable="true" title={labels.drag} aria-label={labels.drag}>⠿</button>
+              <button type="button" data-move-row="up" title={labels.moveUp} aria-label={labels.moveUp}>↑</button>
+              <button type="button" data-move-row="down" title={labels.moveDown} aria-label={labels.moveDown}>↓</button>
+              <button type="button" data-remove-row title={labels.remove} aria-label={labels.remove}>×</button>
+            </div>
+            <span class="experience-index">{String(index + 1).padStart(2, "0")}</span>
             <div class="experience-company">
               <h3 data-content-key={`experience.items.${index}.company`} data-editable>{item.company}</h3>
               <p data-content-key={`experience.items.${index}.role`} data-editable>{item.role}</p>
@@ -131,26 +152,39 @@ const labels = content.locale === "vi"
       </div>
     </section>
 
-    <section class="project-section" id="project" aria-labelledby="project-title">
+    <section class="project-section" id="project" aria-labelledby="project-section-title">
       <div class="shell section-grid">
-        <div>
-          <p class="section-label">03 / {content.project.label}</p>
-          <p class="project-type" data-content-key="project.type" data-editable>{content.project.type}</p>
+        <div class="project-section-heading">
+          <p class="section-label" id="project-section-title">03 / {content.project.label}</p>
+          <button class="editor-add-row" type="button" data-editor-only data-add-row="project">{labels.addProject}</button>
         </div>
-        <a
-          class="project-card"
-          href={content.project.url}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${content.project.title} — ${labels.openProject}`}
-          data-content-href="project.url"
-          data-editor-link
-        >
-          <span class="project-domain" data-content-key="project.url" data-content-format="display-url" data-editable>{content.project.url.replace(/^https?:\/\//, "")}</span>
-          <h2 id="project-title" data-content-key="project.title" data-editable>{content.project.title}</h2>
-          <p data-content-key="project.description" data-editable>{content.project.description}</p>
-          <strong>{content.project.visitLabel}<i aria-hidden="true">↗</i></strong>
-        </a>
+        <div class="project-list" data-row-container="project">
+          {content.project.items.map((item, index) => (
+            <article class="project-item" data-editor-row="project">
+              <div class="editor-row-controls" data-editor-only>
+                <button class="editor-drag-handle" type="button" draggable="true" title={labels.drag} aria-label={labels.drag}>⠿</button>
+                <button type="button" data-move-row="up" title={labels.moveUp} aria-label={labels.moveUp}>↑</button>
+                <button type="button" data-move-row="down" title={labels.moveDown} aria-label={labels.moveDown}>↓</button>
+                <button type="button" data-remove-row title={labels.remove} aria-label={labels.remove}>×</button>
+              </div>
+              <p class="project-type" data-content-key={`project.items.${index}.type`} data-editable>{item.type}</p>
+              <a
+                class="project-card"
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${item.title} — ${labels.openProject}`}
+                data-content-href={`project.items.${index}.url`}
+                data-editor-link
+              >
+                <span class="project-domain" data-content-key={`project.items.${index}.url`} data-content-format="display-url" data-editable>{item.url.replace(/^https?:\/\//, "")}</span>
+                <h2 data-content-key={`project.items.${index}.title`} data-editable>{item.title}</h2>
+                <p data-content-key={`project.items.${index}.description`} data-editable>{item.description}</p>
+                <strong>{content.project.visitLabel}<i aria-hidden="true">↗</i></strong>
+              </a>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   </main>
