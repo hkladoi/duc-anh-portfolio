@@ -289,29 +289,29 @@ function createLayout(document, fonts) {
   };
 
   layout.section = (title) => {
-    layout.ensure(30);
-    layout.y -= 5;
+    layout.ensure(24);
+    layout.y -= 3;
     drawTextRuns(layout.page, fonts, title, PAGE_MARGIN, layout.y, 11.2, true);
-    layout.y -= 5;
+    layout.y -= 4;
     layout.page.drawLine({
       start: { x: PAGE_MARGIN, y: layout.y },
       end: { x: layout.width - PAGE_MARGIN, y: layout.y },
       thickness: 0.75,
       color: rgb(0.08, 0.08, 0.08)
     });
-    layout.y -= 14;
+    layout.y -= 10;
   };
 
   layout.divider = () => {
-    layout.ensure(12);
-    layout.y -= 4;
+    layout.ensure(9);
+    layout.y -= 3;
     layout.page.drawLine({
       start: { x: PAGE_MARGIN, y: layout.y },
       end: { x: layout.width - PAGE_MARGIN, y: layout.y },
       thickness: 0.35,
       color: rgb(0.82, 0.82, 0.82)
     });
-    layout.y -= 8;
+    layout.y -= 6;
   };
 
   layout.newPage();
@@ -421,7 +421,7 @@ function drawSkills(layout, groups) {
     layout.ensure(34);
     layout.richParagraph([{ text: group.title, bold: true }], { size: 8.9, after: 1 });
     for (const item of group.items) layout.richParagraph([{ text: `- ${item}` }], { indent: 10, after: 0 });
-    layout.y -= 5;
+    layout.y -= 3;
   }
 }
 
@@ -455,7 +455,6 @@ export async function buildCvPdf(content, locale, fontBytes) {
   layout.section(copy.sections.experience);
   drawExperience(layout, content, copy);
 
-  if (layout.pages.length === 1) layout.newPage();
   layout.section(copy.sections.project);
   drawProjects(layout, content.project.items, copy);
 

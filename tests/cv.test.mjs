@@ -66,8 +66,7 @@ test("CV generator creates readable Vietnamese and English PDF documents", async
     const bytes = await buildCvPdf(resolvePortfolioContent(locale), locale, fonts);
     assert.equal(String.fromCharCode(...bytes.slice(0, 5)), "%PDF-");
     const document = await PDFDocument.load(bytes);
-    assert.ok(document.getPageCount() >= 2);
-    assert.ok(document.getPageCount() <= 3);
+    assert.equal(document.getPageCount(), 1);
   }
 });
 
